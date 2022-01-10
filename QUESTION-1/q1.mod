@@ -1,0 +1,2 @@
+/home/binita/Desktop/ELDD_EXAM_210950130003/QUESTION-1/q1.o
+
