@@ -21,21 +21,7 @@ int main()
         if(fd < 0) {
                 printf("Cannot open device file...\n");
                 return 0;
-        }
- 
- 	/*printf("Enter the string to write into driver :");
-   	scanf("  %[^\t\n]s", write_buf);
-      	printf("Data Writing ...");
-     	ioctl(fd, write_buf, strlen(write_buf)+1);
-      	printf("Done!\n");                             
- 
- 
- 	 printf("Data Reading ...");
-        ioctl(fd, read_buf, 1024);
-        printf("Done!\n\n");
-        printf("Data = %s\n\n", read_buf);*/      
-        
-        
+        }       
         
         
         printf("Enter the Value to send\n");
