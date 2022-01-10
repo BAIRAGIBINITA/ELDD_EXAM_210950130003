@@ -23,7 +23,9 @@ e)	User should run write application first with any string and check stats using
 #include <linux/device.h>
 #include<linux/slab.h>                 //kmalloc()
 #include<linux/uaccess.h>              //copy_to/from_user()
- 
+#define WR_VALUE _IOW('a','a',int32_t*)
+#define RD_VALUE _IOR('a','b',int32_t*)
+int32_t value = 0;
 #define mem_size        1024           //Memory Size
  
 dev_t dev = 0;
@@ -39,6 +41,7 @@ static int      RLDCdev_open(struct inode *inode, struct file *file);
 static int      RLDCdev_release(struct inode *inode, struct file *file);
 static ssize_t  RLDCdev_read(struct file *filp, char __user *buf, size_t len,loff_t * off);
 static ssize_t  RLDCdev_write(struct file *filp, const char *buf, size_t len, loff_t * off);
+static long     etx_ioctl(struct file *file, unsigned int cmd, unsigned long arg);
 /*
 ** File Operations structure
 */
@@ -99,6 +102,31 @@ static ssize_t RLDCdev_write(struct file *filp, const char __user *buf, size_t l
         pr_info("Data Write : Done!\n");
         return len;
 }
+
+
+static long etx_ioctl(struct file *file, unsigned int cmd, unsigned long arg)
+{
+         switch(cmd) {
+                case WR_VALUE:
+                        if( copy_from_user(&value ,(int32_t*) arg, sizeof(value)) )
+                        {
+                                pr_err("Data Write : Err!\n");
+                        }
+                        pr_info("Value = %d\n", value);
+                        break;
+                case RD_VALUE:
+                        if( copy_to_user((int32_t*) arg, &value, sizeof(value)) )
+                        {
+                                pr_err("Data Read : Err!\n");
+                        }
+                        break;
+                default:
+                        pr_info("Default\n");
+                        break;
+        }
+        return 0;
+}
+ 
 /*
 ** Module Init function
 */
